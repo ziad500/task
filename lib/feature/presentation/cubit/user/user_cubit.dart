@@ -23,8 +23,10 @@ class UserCubit extends Cubit<UserState> {
       await signInUseCase.execute(user);
       emit(UserSuccess());
     } on SocketException catch (_) {
+      print("error");
       emit(UserFailure());
     } catch (_) {
+      print("error");
       emit(UserFailure());
     }
   }

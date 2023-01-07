@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:task/app_const.dart';
 import 'package:task/feature/data/remote/models/user_model.dart';
 import 'package:task/feature/data/remote/models/weight_model.dart';
 import 'package:task/feature/domain/model/weight_model.dart';
@@ -24,8 +25,9 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     weightCollectionRef.doc(weightId).get().then((weight) {
       final newWeight = WeightModel(
               date: weightEntity.date,
-              uid: weightEntity.uid,
-              weight: weightEntity.weight)
+              uid: uid0,
+              weight: weightEntity.weight,
+              weightUid: weightId)
           .toDocument();
       if (!weight.exists) {
         weightCollectionRef.doc(weightId).set(newWeight);
@@ -53,13 +55,37 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
   @override
   Stream<List<WeightEntity>> getWeightList(String uid) {
-    final weightCollectionRef =
-        firestore.collection("users").doc(uid).collection("weight");
+    final weightCollectionRef = firestore
+        .collection("users")
+        .doc(uid)
+        .collection("weight")
+        .orderBy('date', descending: true)
+        .limit(10);
     return weightCollectionRef.snapshots().map((querySnap) {
       return querySnap.docs
           .map((docSnap) => WeightModel.fromSnapshot(docSnap))
           .toList();
     });
+  }
+
+  @override
+  Stream<List<WeightEntity>> getNextWeightList(String uid, Timestamp date) {
+    final weightCollectionRef = firestore
+        .collection("users")
+        .doc(uid)
+        .collection("weight")
+        .orderBy('date', descending: true)
+        .startAfter([date]).limit(10);
+
+    if (weightCollectionRef.snapshots().length == 0) {
+      return Stream.empty();
+    } else {
+      return weightCollectionRef.snapshots().map((querySnap) {
+        return querySnap.docs
+            .map((docSnap) => WeightModel.fromSnapshot(docSnap))
+            .toList();
+      });
+    }
   }
 
   @override

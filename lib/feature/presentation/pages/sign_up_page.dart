@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../app_const.dart';
 import '../../domain/model/user_model.dart';
 import '../cubit/user/user_cubit.dart';
 
@@ -112,10 +113,15 @@ class _SignUpPageState extends State<SignUpPage> {
     if (_emailController.text.isNotEmpty &&
         _passwordController.text.isNotEmpty &&
         _userNameController.text.isNotEmpty) {
-      BlocProvider.of<UserCubit>(context).submitSignUp(
-          user: UserEntity(
-              email: _emailController.text,
-              password: _passwordController.text));
+      BlocProvider.of<UserCubit>(context)
+          .submitSignUp(
+              user: UserEntity(
+                  email: _emailController.text,
+                  password: _passwordController.text))
+          .then((value) => Navigator.pushReplacementNamed(
+                context,
+                PageConst.signInPage,
+              ));
     }
   }
 }

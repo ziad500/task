@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:task/feature/domain/model/weight_model.dart';
 import 'package:task/feature/domain/model/user_model.dart';
 import 'package:task/feature/domain/repositries/firebase_repo.dart';
@@ -22,6 +23,10 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
   @override
   Stream<List<WeightEntity>> getWeightList(String uid) =>
       remoteDataSource.getWeightList(uid);
+
+  @override
+  Stream<List<WeightEntity>> getNextWeightList(String uid, Timestamp date) =>
+      remoteDataSource.getNextWeightList(uid, date);
 
   @override
   Future<bool> isSignIn() async => remoteDataSource.isSignIn();

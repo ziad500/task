@@ -65,11 +65,16 @@ class _AddNewWeightPageState extends State<AddNewWeightPage> {
 
   void _submitNewWeight() {
     if (_weightController.text.isNotEmpty) {
-      BlocProvider.of<WeightCubit>(context).addWeight(
-          weight: WeightEntity(
-              date: Timestamp.now(),
-              weight: _weightController.text,
-              uid: widget.uid));
+      BlocProvider.of<WeightCubit>(context)
+          .addWeight(
+              weight: WeightEntity(
+        date: Timestamp.now(),
+        weight: _weightController.text,
+        uid: widget.uid,
+      ))
+          .then((value) {
+        Navigator.pop(context);
+      });
     }
   }
 }

@@ -8,6 +8,7 @@ import 'package:task/feature/domain/usecases/add_new_weight_usecase.dart';
 import 'package:task/feature/domain/usecases/delete_weight_usecase.dart';
 import 'package:task/feature/domain/usecases/get_create_current_user_usecase.dart';
 import 'package:task/feature/domain/usecases/get_current_uid_usecase.dart';
+import 'package:task/feature/domain/usecases/get_next_weights_usecase.dart';
 import 'package:task/feature/domain/usecases/get_weight_usecase.dart';
 import 'package:task/feature/domain/usecases/is_sign_in_usecase.dart';
 import 'package:task/feature/domain/usecases/sign_in_usecase.dart';
@@ -38,6 +39,7 @@ Future<void> init() async {
       updateWeightUseCase: sl.call(),
       deleteWeightUseCase: sl.call(),
       getWeightUseCase: sl.call(),
+      getNextWeightUseCase: sl.call(),
       addNewWeightUseCase: sl.call()));
 
   //usecase
@@ -55,6 +57,9 @@ Future<void> init() async {
 
   sl.registerLazySingleton<GetWeightUseCase>(
       () => GetWeightUseCase(repository: sl.call()));
+
+  sl.registerLazySingleton<GetNextWeightUseCase>(
+      () => GetNextWeightUseCase(repository: sl.call()));
 
   sl.registerLazySingleton<IsSignInUseCase>(
       () => IsSignInUseCase(repository: sl.call()));
