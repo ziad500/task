@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
         !controller.position.outOfRange) {
       BlocProvider.of<WeightCubit>(context).moreData;
       Future.delayed(
-          Duration(seconds: 1),
+          Duration(seconds: 2),
           () =>
               BlocProvider.of<WeightCubit>(context).getNextWeights(uid: uid0));
     }
