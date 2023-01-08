@@ -1,12 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+
 import 'package:task/app_const.dart';
 import 'package:task/feature/presentation/cubit/weight/weight_cubit.dart';
 import 'package:task/feature/presentation/cubit/weight/weight_states.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage(this.uid);
+  final String uid;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -27,8 +30,8 @@ class _HomePageState extends State<HomePage> {
       BlocProvider.of<WeightCubit>(context).moreData;
       Future.delayed(
           Duration(seconds: 2),
-          () =>
-              BlocProvider.of<WeightCubit>(context).getNextWeights(uid: uid0));
+          () => BlocProvider.of<WeightCubit>(context)
+              .getNextWeights(uid: widget.uid));
     }
   }
 
@@ -49,7 +52,7 @@ class _HomePageState extends State<HomePage> {
       }),
       body: Builder(
         builder: (context) {
-          BlocProvider.of<WeightCubit>(context).getWeights(uid: uid0);
+          BlocProvider.of<WeightCubit>(context).getWeights(uid: widget.uid);
           return BlocConsumer<WeightCubit, WeightState>(
             listener: (context, state) {},
             builder: (context, state) {

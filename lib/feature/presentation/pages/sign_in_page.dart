@@ -7,6 +7,7 @@ import 'package:task/feature/domain/model/user_model.dart';
 import 'package:task/feature/presentation/cubit/auth/auth_cubit.dart';
 import 'package:task/feature/presentation/cubit/user/user_cubit.dart';
 import 'package:task/feature/presentation/cubit/user/user_states.dart';
+import 'package:task/feature/presentation/cubit/weight/weight_cubit.dart';
 import 'package:task/main.dart';
 
 import '../cubit/auth/auth_states.dart';
@@ -42,7 +43,7 @@ class _SignInPageState extends State<SignInPage> {
           BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               if (state is Authenticated) {
-                return const HomePage();
+                return HomePage(state.uid.toString());
               } else {
                 return _bodyWidget(context);
               }
@@ -140,10 +141,13 @@ class _SignInPageState extends State<SignInPage> {
   void submitSignIn() {
     if (_emailController.text.isNotEmpty &&
         _passwordController.text.isNotEmpty) {
-      BlocProvider.of<UserCubit>(context).submitSignIn(
-          user: UserEntity(
-              email: _emailController.text,
-              password: _passwordController.text));
+      BlocProvider.of<UserCubit>(context)
+          .submitSignIn(
+              user: UserEntity(
+                  email: _emailController.text,
+                  password: _passwordController.text))
+          .then((value) =>
+              BlocProvider.of<WeightCubit>(context).getWeights(uid: uid0));
     }
   }
 }

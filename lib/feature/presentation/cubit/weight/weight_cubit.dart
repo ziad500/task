@@ -69,10 +69,12 @@ class WeightCubit extends Cubit<WeightState> {
         }
       });
     } on SocketException catch (_) {
+      print(_);
       print('error');
 
       emit(WeightFailure());
     } catch (_) {
+      print(_);
       print('error');
 
       emit(WeightFailure());
